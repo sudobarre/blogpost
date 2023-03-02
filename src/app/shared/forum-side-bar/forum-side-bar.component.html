@@ -1,0 +1,21 @@
+<div class="sidebar-view-forum mat-elevation-z8">
+  <div style="color: black; font-weight: bold">
+    <mat-icon> forum</mat-icon> Browse Forums
+  </div>
+  <hr />
+  <mat-list class="example-list-wrapping">
+    <span *ngFor="let forum of forums">
+      <span routerLink="/forum/{{ forum.name }}" class="forum">
+        <mat-list-item lines="2">
+          <span matListItemTitle>{{ forum.name }}</span>
+          <span>{{ forum.description }} </span>
+        </mat-list-item>
+      </span>
+
+      <hr />
+    </span>
+  </mat-list>
+  <div style="text-align: center" *ngIf="displayViewAll">
+    <a style="font-weight: bold" routerLink="/forum/list">View All</a>
+  </div>
+</div>

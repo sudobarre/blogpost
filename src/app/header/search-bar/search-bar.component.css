@@ -1,0 +1,72 @@
+:host {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    width: 24px;
+    height: 24px;
+}
+
+/*change the stupid max-width */
+
+.mat-search_field {
+position: relative;
+    left: 30px;
+    /* adjust to your needs */
+    right: 24px;
+    /* adjust to your needs */
+    z-index: 1;
+    flex: 1 1 auto;
+        width: calc(100vw - 250px);
+ 
+        margin: 0 16px;
+}
+
+
+.mat-search_field--active {
+    height: auto;
+}
+
+.mat-search_icons {
+position: absolute;
+    display: flex;
+    align-items: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.mat-search_icons:hover {
+    cursor: pointer;
+}
+
+.mat-search_icons .mat-search_icon-close,
+.mat-search_icons .mat-search_icon-search {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    border-radius: 50%;
+    margin: 10 5px;
+        /* adjust to your needs */
+}
+
+.mat-search_icons .mat-search_icon-close,
+.mat-search_icons.mat-search_icons--active .mat-search_icon-search {
+    opacity: 0;
+    transform: rotate(225deg);
+}
+
+.mat-search_icons.mat-search_icons--active .mat-search_icon-close {
+    opacity: 1;
+    z-index: 3;
+    visibility: visible;
+    transform: rotate(360deg);
+}
+.mat-form-field.hide {
+    display: none !important;
+}
+

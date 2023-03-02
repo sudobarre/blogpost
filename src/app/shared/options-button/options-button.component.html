@@ -1,0 +1,49 @@
+<div id="container">
+  <div *ngIf="isPost && isLoggedIn" style="width: 40px; height: 40px">
+    <button
+      mat-icon-button
+      [style.color]="isStarred ? 'gold' : ''"
+      (click)="star(toDelete)"
+    >
+      <mat-icon> star_border</mat-icon>
+    </button>
+  </div>
+  <div *ngIf="isForum && isLoggedIn" style="width: 40px; height: 40px">
+    <button mat-icon-button (click)="follow(toDelete)">
+      <span *ngIf="isFollowed">
+        <mat-icon>check_circle_outline</mat-icon>
+      </span>
+      <mat-icon [style.color]="'green'">check_circle</mat-icon>
+    </button>
+  </div>
+
+
+  <div style="width: 40px; height: 40px">
+    <button
+      mat-icon-button
+      color="accent"
+      aria-label="Example icon button with a bookmark icon"
+      [matMenuTriggerFor]="menu"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
+  <mat-menu #menu="matMenu" xPosition="before">
+    <button mat-menu-item (click)="openReportDialog()">
+      <span>Report</span>
+      <mat-icon>error_outline</mat-icon>
+    </button>
+
+    <span *ngIf="canDelete()">
+      <button
+        mat-menu-item
+        color="primary"
+        aria-label="Example icon button with a delete icon"
+        (click)="openDeleteDialog(toDelete, isPost)"
+      >
+        <span style="color: red">Delete</span>
+        <mat-icon>delete</mat-icon>
+      </button>
+    </span>
+  </mat-menu>
+</div>

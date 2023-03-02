@@ -1,0 +1,62 @@
+<div
+  infinite-scroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="1000"
+  (scrolled)="onScroll()"
+>
+  <!--  (click)="$event.stopPropagation()"  -->
+  <mat-card
+    class="post-card mat-elevation-z8"
+    *ngFor="let post of posts"
+    routerLink="/post/{{ post.id }}"
+  >
+    <mat-card-header>
+      <div
+        mat-card-avatar
+        [ngStyle]="{
+          'background-image':
+            'url(https://material.angular.io/assets/img/examples/shiba1.jpg)'
+        }"
+        routerLink="/user/{{ post.userName }}"
+        class="example-header-image mat-elevation-z8"
+      ></div>
+      <mat-card-title class="title"
+        ><a class="postname">{{ post.title }}</a></mat-card-title
+      >
+      <span style="display: inline-block"
+        ><mat-card-subtitle
+          >by
+          <a routerLink="/user/{{ post.userName }}">{{
+            post.userName
+          }}</a></mat-card-subtitle
+        ></span
+      >
+      <mat-card-subtitle
+        ><a class="postname" routerLink="/forum/{{ post.forumName }}">{{
+          post.forumName
+        }}</a></mat-card-subtitle
+      >
+      <mat-card-subtitle
+        ><small>{{ post.createdAt }}</small></mat-card-subtitle
+      >
+      <div
+        class="header-right-container"
+        style="position: absolute; right: 0; padding-right: 10px"
+      >
+        <span (click)="$event.stopPropagation()">
+          <app-options-button
+            [toDelete]="post"
+            [isPost]="true"
+          ></app-options-button>
+        </span>
+      </div>
+    </mat-card-header>
+    <mat-card-content class="post-body">
+        <app-read-more [text]="post.description" (click)="$event.stopPropagation()"></app-read-more>
+    </mat-card-content>
+    <span (click)="$event.stopPropagation()">
+      <app-post-data-footer [post]="post"></app-post-data-footer>
+    </span>
+  </mat-card>
+  <app-scroll-top style="position: absolute; z-index: 23847234;"></app-scroll-top>
+</div>

@@ -1,0 +1,7 @@
+.action-buttons{
+  margin-top: 15px;
+  text-align: center;
+  display: flex;
+    align-items: center;
+    justify-content: center
+}

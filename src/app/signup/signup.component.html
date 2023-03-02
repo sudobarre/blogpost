@@ -1,0 +1,116 @@
+<div class="signup-section">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+        <h2>Sign up</h2>
+        <mat-error *ngIf="isError">
+          Signup Failed. Please wait and try again.
+        </mat-error>
+        <mat-form-field>
+          <mat-label> E-mail adress</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="pat@example.com"
+          />
+          <mat-error
+            *ngIf="
+              signupForm.get('email')?.invalid &&
+              (signupForm.get('email')?.dirty ||
+                signupForm.get('email')?.touched) &&
+              signupForm.get('email')?.errors
+            "
+          >
+            Please enter a valid email adress.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label> Username</mat-label>
+          <input matInput type="text" formControlName="username" />
+          <mat-error
+            *ngIf="
+              (signupForm.get('username')?.dirty ||
+                signupForm.get('username')?.touched) &&
+              signupForm.get('username')?.invalid
+            "
+          >
+            {{ getUsernameErrorMessage() }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label> Password: </mat-label>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            formControlName="password"
+          />
+          <button
+            mat-icon-button
+            type="button"
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>
+              {{ hide ? "visibility_off" : "visibility" }}
+            </mat-icon>
+          </button>
+          <mat-error
+            *ngIf="
+              (signupForm.get('password')?.dirty ||
+                signupForm.get('password')?.touched) &&
+              signupForm.get('password')?.invalid
+            "
+          >
+            {{ getPasswordErrorMessage() }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label> Repeat Password: </mat-label>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            formControlName="confirmPassword"
+          />
+          <button
+            mat-icon-button
+            type="button"
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>
+              {{ hide ? "visibility_off" : "visibility" }}
+            </mat-icon>
+          </button>
+          <mat-error
+            *ngIf="
+              signupForm.get('confirmPassword')?.touched &&
+              signupForm.hasError('mismatch', ['confirmPassword'])
+            "
+          >
+            Passwords do not match.
+          </mat-error>
+        </mat-form-field>
+
+        <div class="mt-top">
+          <button
+            [disabled]="!signupForm.valid"
+            mat-raised-button
+            color="primary"
+            mat-button
+          >
+            Sign Up
+          </button>
+          <span style="padding-left: 15px"
+            >Already have an account? <a routerLink="/login">Log in</a></span
+          >
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

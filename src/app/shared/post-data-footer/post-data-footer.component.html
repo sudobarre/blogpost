@@ -1,0 +1,25 @@
+<mat-card-actions class="action-buttons">
+  <button
+    mat-button
+    color="primary"
+    (click)="upvotePost()"
+    class="upvote"
+    [style.color]="post.upVote ? 'green' : ''"
+  >
+    <mat-icon>arrow_upward</mat-icon>
+  </button>
+  {{ post.voteCount }}
+  <button
+    mat-button
+    color="primary"
+    (click)="downvotePost()"
+    class="downvote"
+    [style.color]="post.downVote ? 'red' : ''"
+  >
+    <mat-icon>arrow_downward</mat-icon>
+  </button>
+  <button mat-button color="primary" routerLink="/post/{{post.id}}">
+    <mat-icon>comment</mat-icon> Comments({{ post.commentCount }})
+  </button>
+  <button mat-button color="primary" [cdkCopyToClipboard]="link" (click)="openSnackBar()"><mat-icon>share</mat-icon> Share</button>
+</mat-card-actions>

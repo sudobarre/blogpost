@@ -1,0 +1,28 @@
+#forum-feed{
+margin-top: 75px;
+  /*
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  */
+}
+@media screen and (min-width: 0px) and (max-width: 720px) {
+  #sidebar {
+    display: none;
+  }
+
+  .mobile-hide {
+    display: none !important;
+  }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

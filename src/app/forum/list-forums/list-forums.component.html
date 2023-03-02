@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="row">
+    <hr />
+    <div class="col-md-9">
+      <h2>List of Forums</h2>
+      <mat-chip-listbox aria-label="Forums">
+        <mat-chip-option *ngFor="let forum of forums" matTooltip="{{forum.description}}">
+          <a routerLink="/forum/{{ forum.name }}" style="text-decoration: none;">{{ forum.name }}</a>
+          
+          <mat-card-subtitle>{{forum.numberOfPosts}}</mat-card-subtitle>
+
+        </mat-chip-option>
+      </mat-chip-listbox>
+    </div>
+    <div class="col-md-3">
+    </div>
+  </div>
+</div>
