@@ -39,7 +39,7 @@ export class PostDataFooterComponent {
   ngOnInit(): void {
     this.updateVoteDetails();
     
-    this.url = new URL(`/post/${this.post.id}`, this.url.origin);
+    this.url = new URL(`/blogpost-frontend/post/${this.post.id}`, this.url.origin);
     this.link = this.url.href;
   }
 

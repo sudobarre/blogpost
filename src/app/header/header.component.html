@@ -22,9 +22,9 @@
       </app-search-bar>
       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
         <mat-option *ngFor="let forum of filteredForums | async">
-          <a href="/forum/{{ forum.name }}" style="text-decoration: none; color: black;">{{ forum.name }}</a>
+          <a routerLink="/forum/{{ forum.name }}" style="text-decoration: none; color: black;">{{ forum.name }}</a>
         </mat-option>
-        <mat-option routerLink="forum/all">Search for more</mat-option>
+        <mat-option routerLink="/forum/all">Search for more</mat-option>
       </mat-autocomplete>
     </div>
 
