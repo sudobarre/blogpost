@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommentPayload } from './comment.payload';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Accept': 'application/json' })
+};
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +23,10 @@ export class CommentService {
   }
 
   postComment(commentPayload: CommentPayload): Observable<any> {
-    return this.httpClient.post<any>( this.api, commentPayload);
+    return this.httpClient.post<any>(
+      this.api,
+      commentPayload,
+      httpOptions);
   }
 
   getAllCommentsByUser(name: string, page?: number, limit?: number, sortBy?: string, direction?: string): Observable<CommentPayload[]>  {

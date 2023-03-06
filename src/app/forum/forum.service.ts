@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ForumModel } from './forum-response'
 import { environment } from 'src/environments/environment';
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Accept': 'application/json' })
+};
 @Injectable({
   providedIn: 'root'
 })
@@ -21,7 +24,10 @@ export class ForumService {
   }
 
   createForum(forumModel: ForumModel): Observable<ForumModel> {
-    return this.http.post<ForumModel>(this.apiUrl, forumModel);
+    return this.http.post<ForumModel>(
+      this.apiUrl,
+      forumModel,
+      httpOptions);
   }
 
   editForum(forumModel: ForumModel): Observable<ForumModel> {

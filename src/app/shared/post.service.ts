@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { PostModel } from './post-model';
 import { Observable } from 'rxjs';
 import { CreatePostPayload } from '../post/create-post/create-post.payload';
@@ -9,6 +9,9 @@ import { DeleteDialogComponent } from './options-button/delete-dialog/delete-dia
 import { EventBusService } from '../_shared/event-bus.service';
 
 const post_url: string = environment.apiKey + "/post";
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Accept': 'application/json' })
+};
 @Injectable({
   providedIn: 'root'
 })
@@ -39,7 +42,9 @@ export class PostService {
   }
 
   createPost(postPayload: CreatePostPayload): Observable<any> {
-    return this.http.post(post_url, postPayload);
+    return this.http.post(post_url,
+      postPayload,
+      httpOptions);
   }
 
   getPost(id: number): Observable<PostModel> {
@@ -55,11 +60,15 @@ export class PostService {
   }
 
   save(postPayload: CreatePostPayload): Observable<any> {
-    return this.http.post(post_url + '/save', postPayload);
+    return this.http.post(post_url + '/save',
+    postPayload,
+    httpOptions);
   }
 
   unsave(postPayload: CreatePostPayload): Observable<any> {
-    return this.http.post(post_url + '/unsave', postPayload);
+    return this.http.post(post_url + '/unsave',
+    postPayload,
+    httpOptions);
   }
 
   getSavedPosts(): Observable<PostModel[]>{
