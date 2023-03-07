@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTERCEPTORS, HttpErrorResponse } from '@angular/common/http';
+import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTERCEPTORS, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 import { StorageService } from '../_services/storage.service';
 
@@ -21,7 +21,15 @@ export class HttpRequestInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    let defaultHeaders = new HttpHeaders();
+    defaultHeaders = defaultHeaders.append(
+      'Accept',
+     'application/json',
+      );
+      defaultHeaders = defaultHeaders.append('DNT', '0'); 
+    //credentials.include?
     req = req.clone({
+      headers: defaultHeaders,
       withCredentials: true,
     });
 
@@ -48,7 +56,6 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         return this.authService.refreshToken().pipe(
           switchMap(() => {
             this.isRefreshing = false;
-
             return next.handle(request);
           }),
           catchError((error) => {
@@ -57,7 +64,6 @@ export class HttpRequestInterceptor implements HttpInterceptor {
             if (error.status == '403') {
               this.eventBusService.emit(new EventData('logout', null));
             }
-
             return throwError(() => error);
           })
         );

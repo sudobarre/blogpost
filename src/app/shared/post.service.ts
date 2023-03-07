@@ -10,8 +10,7 @@ import { EventBusService } from '../_shared/event-bus.service';
 
 const post_url: string = environment.apiKey + "/post";
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Accept': 'application/json' })
-};
+  headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Accept': 'application/json' })};
 @Injectable({
   providedIn: 'root'
 })

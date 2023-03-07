@@ -77,7 +77,6 @@ export class HeaderComponent implements OnInit {
     this.authService.logout().subscribe({
       next: (res: any) => {
         this.storageService.clean();
-        window.location.reload();
       },
       error: (err: any) => {
         console.log(err);
