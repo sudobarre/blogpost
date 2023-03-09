@@ -17,6 +17,7 @@ export class ViewForumComponent implements OnInit, OnDestroy {
   forumName: string;
   forum: ForumModel;
   isLoading: boolean = true;
+  forumType: string = "forum";
 
   private routeSubscription: Subscription;
 
@@ -41,7 +42,7 @@ export class ViewForumComponent implements OnInit, OnDestroy {
       );
 
       this.postService
-        .getAllPostsByForum(this.forumName, 0, 5, undefined, 'DESC')
+        .getAllPostsByForum(this.forumName, 0, 25, undefined, 'DESC')
         .subscribe(
           data => {
             this.postsByForum = data;

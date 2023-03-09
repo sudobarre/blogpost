@@ -1,13 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
-import { AuthService } from 'src/app/auth/auth.service';
+import { catchError, throwError } from 'rxjs';
 import { PostModel } from '../post-model';
-import { PostService } from '../post.service';
-import { VotePayload } from '../vote-button/vote-payload';
-import { VoteType } from '../vote-button/vote-type';
 import { VoteService } from '../vote.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { StorageService } from 'src/app/_services/storage.service';
+import { VotePayload } from '../vote/vote-payload';
+import { VoteType } from '../vote/vote-type';
+
 
 @Component({
   selector: 'app-post-data-footer',
@@ -18,27 +18,25 @@ export class PostDataFooterComponent {
 
   @Input() post: PostModel;
   votePayload: VotePayload;
-  upvoteColor: string;
-  downvoteColor: string;
   isLoggedIn: boolean;
   url= new URL(window.location.href);
   link: string = '';
+  hasVoted: boolean;
 
   constructor(private router: Router,
     private voteService: VoteService,
-    private postService: PostService,
-    private authService: AuthService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private storage: StorageService
     ){
        this.votePayload = {
         voteType: undefined,
         postId: undefined
       }
-    this.authService.loggedIn.subscribe((data: boolean) => this.isLoggedIn = data);
+      this.isLoggedIn = this.storage.isLoggedIn();
   }
   ngOnInit(): void {
-    this.updateVoteDetails();
-    
+    //when a post gets created, the mapper assigns false to upVote and downVote in the backend.  
+    this.hasVoted = (this.post.downVote || this.post.upVote);
     this.url = new URL(`/blogpost/post/${this.post.id}`, this.url.origin);
     this.link = this.url.href;
   }
@@ -46,32 +44,56 @@ export class PostDataFooterComponent {
 
 
   upvotePost() {
+    if(!this.isLoggedIn) return;
+    if(this.post.upVote || this.votePayload.voteType == VoteType.UPVOTE){      
+      return;
+    }
     this.votePayload.voteType = VoteType.UPVOTE;
     this.vote();
-    this.downvoteColor = '';
+  
   }
 
   downvotePost() {
+    if(!this.isLoggedIn) return;
+    if(this.post.downVote || this.votePayload.voteType == VoteType.DOWNVOTE){
+      return;
+    }
     this.votePayload.voteType = VoteType.DOWNVOTE;
     this.vote();
-    this.upvoteColor = '';
+    
   }
 
   private vote() {
+    if(!this.isLoggedIn) return;
     this.votePayload.postId = this.post.id;
-    this.voteService.vote(this.votePayload).subscribe(() => {
-      this.updateVoteDetails();
+    let isUpvoted =  (this.votePayload.voteType == VoteType.UPVOTE);
+    this.post.upVote = isUpvoted;
+    this.post.downVote = !isUpvoted;
+
+    //if user has previously voted the opposite, it should add/substract 2.
+    if(this.hasVoted){
+      if(this.post.downVote){
+        this.post.voteCount-=2;
+      } else {
+        this.post.voteCount+=2;
+      }
+    } else {
+      //first time voting on the post, should add/substract 1.
+      //doing the ternary conditional didnt work for some reason
+      //some reason probably being me not knowing how to
+      if(isUpvoted){
+        this.post.voteCount++;  
+      } else {
+        this.post.voteCount--;  
+      }
+      this.hasVoted = true;      
+    }
+    this.voteService.vote(this.votePayload).subscribe((response: any) => {
     }, error => {
-      throwError(error);
-    });
+      catchError(error);
+    }); 
   }
-
-  private updateVoteDetails() {
-    this.postService.getPost(this.post.id).subscribe(post => {
-      this.post = post;
-    });
-  }
-
+  
   openSnackBar(){
     this._snackBar.open("Link copied to clipboard.", "Dismiss", {
       duration: 1500,

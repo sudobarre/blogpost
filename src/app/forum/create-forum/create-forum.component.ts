@@ -30,7 +30,7 @@ export class CreateForumComponent implements OnInit {
       ]),
       description: new FormControl('', [
         Validators.required,
-        Validators.maxLength(30)
+        Validators.maxLength(80)
       ])
     });
     this.forumModel = {

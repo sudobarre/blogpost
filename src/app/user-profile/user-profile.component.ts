@@ -19,6 +19,7 @@ export class UserProfileComponent implements OnInit {
   commentLength: number;
   page: number = 0;
   isLoading: boolean = true;
+  commentType: string = "comment";
 
   constructor(private activatedRoute: ActivatedRoute, private postService: PostService,
     private commentService: CommentService, private storageService: StorageService) {
@@ -29,11 +30,11 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.commentService.getAllCommentsByUser(this.name).subscribe(data => {
+    this.commentService.getAllCommentsByUser(this.name, undefined, 200).subscribe(data => {
       this.comments = data;
       this.commentLength = data.length;
     });
-        this.postService.getAllPostsByUser(this.name, this.page).subscribe(data => {
+        this.postService.getAllPostsByUser(this.name, this.page, 200).subscribe(data => {
           this.posts = data;
           this.postLength = data.length;
           this.isLoading = false;

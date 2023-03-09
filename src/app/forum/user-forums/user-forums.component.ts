@@ -16,7 +16,7 @@ export class UserForumsComponent {
 
   }
   ngOnInit(){
-this.forumService.getAllForumsByUsername(this.username, 0, 20).subscribe(
+this.forumService.getAllForumsByUsername(this.username, 0, 25).subscribe(
       (data: Array<ForumModel>) => {
         this.userForums = data;
       }

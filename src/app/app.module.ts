@@ -50,7 +50,6 @@ import { CreatePostComponent } from './post/create-post/create-post.component';
 import { ViewPostComponent } from './post/view-post/view-post.component';
 import { PostTileComponent } from './shared/post-tile/post-tile.component';
 import { ForumSideBarComponent } from './shared/forum-side-bar/forum-side-bar.component';
-import { VoteButtonComponent } from './shared/vote-button/vote-button.component';
 import { ReadMoreComponent } from './shared/read-more/read-more.component';
 import { AuthComponent } from './auth/auth.component';
 import { FooterComponent } from './footer/footer.component';
@@ -66,6 +65,7 @@ import { ContactMeComponent } from './contact-me/contact-me.component';
 import { ReportDialogComponent } from './shared/report-dialog/report-dialog.component';
 import { ScrollTopComponent } from './shared/scroll-top/scroll-top.component';
 import { SearchBarComponent } from './header/search-bar/search-bar.component';
+import { RateLimitInterceptor } from './_helpers/rate-limit.interceptor';
 
 
 @NgModule({
@@ -82,7 +82,6 @@ import { SearchBarComponent } from './header/search-bar/search-bar.component';
         ViewPostComponent,
         PostTileComponent,
         ForumSideBarComponent,
-        VoteButtonComponent,
         AuthComponent,
         ReadMoreComponent,
         FooterComponent,
@@ -110,6 +109,10 @@ import { SearchBarComponent } from './header/search-bar/search-bar.component';
             provide: HTTP_INTERCEPTORS,
             useClass: ExceptionIntercept,
             multi: true
+        },
+        {   provide: HTTP_INTERCEPTORS,
+            useClass: RateLimitInterceptor,
+            multi: true 
         }
     ],
     bootstrap: [AppComponent],

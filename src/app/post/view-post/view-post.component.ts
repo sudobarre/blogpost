@@ -20,6 +20,7 @@ export class ViewPostComponent implements OnInit {
 
   postId: number;
   post: PostModel;
+  postType: string = 'post';
 
   forum: ForumModel;
   forumName: string;
@@ -31,6 +32,7 @@ export class ViewPostComponent implements OnInit {
   page: number = 0;
 
   isLoading: boolean = false;
+  commentType: string = 'comment';
 
   constructor(private postService: PostService, private activateRoute: ActivatedRoute,
     private commentService: CommentService, private router: Router, private storageService: StorageService, private forumService: ForumService) {
@@ -87,7 +89,7 @@ export class ViewPostComponent implements OnInit {
 
 
   private getCommentsFromPost() {
-    this.commentService.getAllCommentsFromPost(this.postId, 0, 5).subscribe(data => {
+    this.commentService.getAllCommentsFromPost(this.postId, 0, 25).subscribe(data => {
       this.comments = data;      
     }, error => {
       throwError(error);
@@ -100,7 +102,7 @@ export class ViewPostComponent implements OnInit {
 
    onScroll():void{
     this.commentService
-    .getAllCommentsFromPost(this.postId, ++this.page, 5)
+    .getAllCommentsFromPost(this.postId, ++this.page, 25)
     .subscribe((comments: CommentPayload[]) =>{
       this.comments.push(...comments);
     });

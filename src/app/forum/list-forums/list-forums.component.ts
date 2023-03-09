@@ -15,7 +15,7 @@ export class ListForumsComponent implements OnInit {
   }
 
   ngOnInit() {    
-    //consider adding an infinite scroll once reached 200 forums
+    //consider adding an infinite scroll once reached 200 forums, will never happen tho lol
     this.forumService.getAllForums(0, 200).subscribe(data => {
       this.forums = data;
     }, error => {

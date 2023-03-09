@@ -14,6 +14,7 @@ export class PostTileComponent implements OnInit {
   page: number = 0;
   isReadMore: boolean = false;
   sortBy: string = "createdDate";
+  postType: string = "post";
 
   constructor(private router: Router,
      private postService: PostService,
@@ -27,7 +28,7 @@ export class PostTileComponent implements OnInit {
 
   onScroll():void{
     this.postService
-    .getAllPosts(++this.page, undefined, this.sortBy)
+    .getAllPosts(++this.page, 5, this.sortBy)
     .subscribe((posts: PostModel[]) =>{
       this.posts.push(...posts);
     });

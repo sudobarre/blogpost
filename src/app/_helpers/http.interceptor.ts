@@ -26,8 +26,9 @@ export class HttpRequestInterceptor implements HttpInterceptor {
       'Accept',
      'application/json',
       );
-      defaultHeaders = defaultHeaders.append('DNT', '0'); 
-    //credentials.include?
+      if (req.headers.has('DNT')) {
+        req.headers.delete('DNT');
+      }    
     req = req.clone({
       headers: defaultHeaders,
       withCredentials: true,

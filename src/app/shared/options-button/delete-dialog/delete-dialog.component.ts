@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   selector: 'app-delete-dialog',
   template: `
     <h1 mat-dialog-title>Confirm Delete</h1>
-    <mat-dialog-content>Are you sure you want to delete this {{data.isPost ? 'post' : 'comment'}}?</mat-dialog-content>
+    <mat-dialog-content>Are you sure you want to delete this {{data.name}}?</mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button [mat-dialog-close]="false">Cancel</button>
       <button mat-button [mat-dialog-close]="true" style="margin-top: 2px; margin-left: auto"
@@ -13,7 +13,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
                 mat-button
                 type="submit">Delete</button>
     </mat-dialog-actions>
-    
   `
 })
 export class DeleteDialogComponent {
@@ -30,3 +29,4 @@ export class DeleteDialogComponent {
     this.dialogRef.close(true);
   }
 }
+

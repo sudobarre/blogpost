@@ -22,7 +22,7 @@
             <!-- TODO: add option-buttons and on save add them to user's followed forums. -->
           </h1>
           <span class="example-spacer"></span>
-          <app-options-button [isForum]="true" [isPost]="false" [toDelete]="this.forum"></app-options-button>
+          <app-options-button [name]="forumType" [toDelete]="this.forum"></app-options-button>
         </mat-toolbar-row>
         <app-post-tile [posts]="postsByForum"></app-post-tile>
       </div>

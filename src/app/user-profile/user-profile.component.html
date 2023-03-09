@@ -30,7 +30,7 @@
                                           }" routerLink="/user/{{ comment.userName }}" class="example-header-image">
             </div>
             <div class="header-right-container" style="position: absolute; right: 0; padding-right: 10px">
-              <app-options-button [toDelete]="comment" [isPost]="false"></app-options-button>
+              <app-options-button [toDelete]="comment" [name]="commentType"></app-options-button>
             </div>
             <mat-card-title>
               <a class="username" routerLink="/user/{{ comment.userName }}" style="text-decoration: none; color:#3f51b5">{{ comment.userName

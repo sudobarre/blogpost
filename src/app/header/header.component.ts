@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit {
     this.authService.loggedIn.subscribe((data: boolean) => this.isLoggedIn = data);
     this.authService.username.subscribe((data: string) => this.username = data);
 
-    this.forumService.getAllForums(0, 5).subscribe(forumList => {
+    this.forumService.getAllForums(0, 25).subscribe(forumList => {
       this.forums = forumList;
 
       this.filteredForums = this.searchControl.valueChanges.pipe(

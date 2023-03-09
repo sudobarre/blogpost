@@ -39,7 +39,7 @@
         mat-menu-item
         color="primary"
         aria-label="Example icon button with a delete icon"
-        (click)="openDeleteDialog(toDelete, isPost)"
+        (click)="openDeleteDialog(toDelete, this.name)"
       >
         <span style="color: red">Delete</span>
         <mat-icon>delete</mat-icon>

@@ -17,11 +17,12 @@ import { ForumService } from 'src/app/forum/forum.service';
 })
 export class OptionsButtonComponent implements OnInit{
     @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
-    //could be a post or a comment.
+  //could be a post or a comment.
   @Input() toDelete: any;
-  @Input() isPost: boolean;
   @Input() isForum: boolean;
+  @Input() name: string;
 
+  isPost: boolean;
   isStarred: boolean;
   isFollowed: boolean;
 
@@ -43,19 +44,27 @@ export class OptionsButtonComponent implements OnInit{
     ) {}
 
   ngOnInit(): void {
+    this.isPost = (this.name=="post");
     this.isLoggedIn = this.localStorage.isLoggedIn();
+    //This is wrong, cos its making a request on every init of the options button, which is every single post.
+    //it should be making one request per page view, instead its making
+    //number of posts requests, regardless whether they are saved or not.
+
+    //Consider adding it to the cache db, or cache on client-side (when its ready), or
+    //Having a sort of Output where this component just polls it every time.
+    //The output would update its savedPosts value every time a post was saved/unsaved.
     if(this.isLoggedIn){
-      this.postService.getSavedPosts().subscribe(
-        (data: PostModel[]) => {
-          this.savedPosts = data;
-          if(this.isPost){
+      if(this.name == "post"){
+        this.postService.getSavedPosts().subscribe(
+          (data: PostModel[]) => {
+            this.savedPosts = data;
             this.isStarred = this.containsObject(this.toDelete,this.savedPosts);
           }
-        }
-      );
+        )
+      };
     this.userRoles = this.localStorage.getRoles();
     this.username = this.localStorage.getUsername();
-    //call forumService to check if the forum is followed by the user
+    //TODO: call forumService to check if the forum is followed by the user
     this.isFollowed = false;
     }
   }
@@ -70,24 +79,26 @@ export class OptionsButtonComponent implements OnInit{
     return false;
 }
 
- openDeleteDialog(toDelete: any, isPost: boolean): void {
+ openDeleteDialog(toDelete: any, name: string): void {
 
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = { toDelete, isPost };
+    dialogConfig.data = { toDelete, name };
 
     const dialogRef = this.dialog.open(DeleteDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if(this.isForum){
+      if(result){
+      switch(name){
+        case "comment":
+          return this.deleteComment(toDelete.id);
+        case "post":
+          return this.deletePost(toDelete.id);
+        case "forum":
           return this.deleteForum(toDelete.id);
-        }
-        if (isPost) {
-          this.deletePost(toDelete.id);
-        } else {
-          this.deleteComment(toDelete.id);
-        }
+        default:
+          break;
       }
+    }
     });
   }
 
@@ -109,6 +120,7 @@ export class OptionsButtonComponent implements OnInit{
     //delete service alredy subscribes and notifies
     this.postService.delete(postId);
     this.router.navigate(['/']);
+    //notify user that it has been deleted.
   }
 
 
@@ -116,13 +128,18 @@ export class OptionsButtonComponent implements OnInit{
     this.commentService.deleteComment(id).subscribe(
       sth => {
         window.location.reload();
+        //notify user that it has been deleted.
       }
     );
   }
 
   deleteForum(id: number){
-    //delete from forum service
-    this.router.navigate(['/']);
+    this.forumService.deleteForum(id).subscribe(
+      sth => {
+        this.router.navigate(['/']);
+      }
+    );
+    //notify user that it has been deleted.
   }
 
   //have to update the updated value before creating another request
@@ -147,10 +164,16 @@ export class OptionsButtonComponent implements OnInit{
   canDelete(): boolean{
     //either the owner or an admin or mod can delete it.
     //TODO: check for the response on forum model, it doesnt currently have an author.
+    if(this.name=="forum"){
+      if(!(this.userRoles.length > 2)){
+        return false;
+      }
+      return true;
+    }
     return ((this.toDelete.userName == this.username) || this.userRoles.length > 1);
   }
 
-
+  //TODO
   follow(forum: any){
     //call forumService to follow the forum
   }
