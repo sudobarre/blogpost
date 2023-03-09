@@ -6,7 +6,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormControl } from '@angular/forms';
-import { map, Observable, startWith } from 'rxjs';
+import { catchError, map, Observable, startWith } from 'rxjs';
 import { PostService } from '../shared/post.service';
 import { ForumService } from '../forum/forum.service';
 import { ForumModel } from '../forum/forum-response';
@@ -77,10 +77,13 @@ export class HeaderComponent implements OnInit {
     this.authService.logout().subscribe({
       next: (res: any) => {
         this.storageService.clean();
+        window.location.reload();
       },
       error: (err: any) => {
-        console.log(err);
+        catchError(err);
+        window.location.reload();
       }
+      
     });
     this.router.navigateByUrl('/login');
   }

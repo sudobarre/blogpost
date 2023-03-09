@@ -1,14 +1,15 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
+import { PostModel } from '../shared/post-model';
 
 const USER_KEY = 'current-auth-user';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
-  setAccessToken(accessToken: any) {
-    throw new Error('Method not implemented.');
-  }
+
+  private readonly SAVED_POSTS_KEY = "savedPosts";
 
   constructor() {}
 
@@ -54,4 +55,27 @@ export class StorageService {
   }
 
   //TODO: get comments, forums, posts, favourites, etc
+  public getSavedPosts(): PostModel[]{
+    const savedPosts = window.localStorage.getItem(this.SAVED_POSTS_KEY);
+    if (savedPosts) {
+      try {
+        return JSON.parse(savedPosts);
+      } catch (error) {
+        console.error('Error parsing saved posts:', error);
+      }
+    }
+    return [];
+  }
+
+  public savePost(post: PostModel): void {
+    const savedPosts = this.getSavedPosts();
+    savedPosts.push(post);
+    window.localStorage.setItem('savedPosts', JSON.stringify(savedPosts));
+  }
+
+  public unsavePost(post: PostModel): void {
+    let savedPosts = this.getSavedPosts();
+    savedPosts = savedPosts.filter(p => p.id !== post.id);
+    window.localStorage.setItem('savedPosts', JSON.stringify(savedPosts));
+  }
 }

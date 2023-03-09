@@ -5,6 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../auth/auth.service';
 import { StorageService } from '../_services/storage.service';
+import { PostService } from '../shared/post.service';
+import { catchError } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -24,10 +26,18 @@ export class LoginComponent implements OnInit {
   hide: boolean = true;
   errorMessage: String = '';
   isLoggedIn : boolean = false;
-  roles: string[] = []
+  //roles: string[] = []
 
-  constructor(private authService: AuthService, private activatedRoute: ActivatedRoute,
-    private router: Router, private toastr: ToastrService, private formBuilder: FormBuilder,  private storageService: StorageService) {
+  //disabling roles for now, maybe later they might be useful for extra info but useless now.
+  constructor(
+    private authService: AuthService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private toastr: ToastrService,
+    private formBuilder: FormBuilder,
+    private storageService: StorageService,
+    private postService: PostService,
+    ) {
     this.loginRequestPayload = {
       username: '',
       password: ''
@@ -39,7 +49,7 @@ export class LoginComponent implements OnInit {
 
      if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
-      this.roles = this.storageService.getUser().roles;
+      //this.roles = this.storageService.getUser().roles;
     }
     this.loginForm = this.formBuilder.group({
       username: new FormControl('', Validators.required),
@@ -57,27 +67,38 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
-    this.submitted = true;
-    this.loginRequestPayload.username = this.loginForm.get('username')?.value;
-    this.loginRequestPayload.password = this.loginForm.get('password')?.value;
+    if(!this.isLoggedIn){
+      this.submitted = true;
+      this.loginRequestPayload.username = this.loginForm.get('username')?.value;
+      this.loginRequestPayload.password = this.loginForm.get('password')?.value;
 
-    this.authService.login(this.loginRequestPayload).subscribe({
-      next: data => {
-        this.storageService.saveUser(data);
-        this.roles = this.storageService.getUser().roles;
-        this.isError = false;
-        this.isLoggedIn = true;
-        this.router.navigateByUrl('');
-        
-        this.toastr.success('Login Successful');
-        
-    },
-     error: err => {
-      this.isError = true;
-      this.errorMessage = err.error.message;
-      //console.log(this.errorMessage);
-    }
-  });
+      this.authService.login(this.loginRequestPayload).subscribe({
+        next: data => {
+          this.storageService.saveUser(data);
+          //this.roles = this.storageService.getUser().roles;
+          this.isError = false;
+          this.isLoggedIn = true;
+          this.router.navigateByUrl('');
+          this.toastr.success('Login Successful');
+
+          //get saved posts and set them on storage
+          this.postService.getSavedPosts().subscribe(
+            (savedPosts)=>{
+              
+              this.storageService.set('savedPosts', JSON.stringify(savedPosts));
+            }
+          );
+      },
+      error: err => {
+        this.isError = true;
+        this.errorMessage = err.error.message;
+        catchError(err);
+      }
+    });
+  } else {
+    console.log("You are still signed in!");
+    
+  }
 }
 
   reloadPage(): void {

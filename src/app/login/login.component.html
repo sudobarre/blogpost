@@ -18,7 +18,7 @@
               loginForm.get('username')?.errors
             "
           >
-            Username is invalid.
+            Please provide a username
           </mat-error>
         </mat-form-field>
         <mat-form-field>
@@ -54,7 +54,7 @@
         </mat-form-field>
         <div class="mt-top">
           <button
-            [disabled]="!loginForm.valid"
+            [disabled]="!loginForm.valid || this.isLoggedIn"
             mat-raised-button
             color="primary"
             mat-button
