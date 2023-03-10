@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="row post-form" >
+      <div>
+        <form
+          [formGroup]="createPostDialogForm"
+          (ngSubmit)="createPost()"
+          novalidate
+        >
+          <div>
+            <div mat-dialog-title>Create Post</div>
+  
+            <input
+              type="text"
+              required
+              [formControlName]="'title'"
+              class="form-control"
+              style="margin-top: 5px; "
+              placeholder="Title"
+            />
+            <mat-error
+              *ngIf="(createPostDialogForm.get('title')?.touched || createPostDialogForm.get('title')?.dirty) && createPostDialogForm.get('title')?.errors?.['minlength']"
+            >
+                Title can't be empty.
+            </mat-error>
+            <mat-error
+              *ngIf="createPostDialogForm.get('title')?.errors?.['maxlength']"
+            >
+              Title can't have more than 256 characters.
+            </mat-error>
+            <textarea
+              type="text"
+              [formControlName]="'description'"
+              style="width: 100%; margin-top: 5px; height: 100px;"
+              placeholder="Description (optional)"
+            ></textarea>
+            <div>
+              <div
+                mat-dialog-actions
+                style="margin-top: 6px; display: flex"
+              >
+                <button
+                  type="button"
+                  (click)="discard()"
+                  mat-button
+                  (click)="onNoClick()"
+                  style="margin-top: 2px"
+                >
+                  Discard
+                </button>
+                <button
+                  [disabled]="!createPostDialogForm.valid"
+                  style="margin-top: 2px; margin-left: auto"
+                  mat-raised-button
+                  color="primary"
+                  mat-button
+                  type="submit"
+                >
+                  Create
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

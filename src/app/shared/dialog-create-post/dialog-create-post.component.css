@@ -1,0 +1,12 @@
+
+.post-form{
+    width: 500px;
+    max-height: 500px;
+  }
+  
+  @media (max-width: 767px) {
+    .post-form{
+        width: 350px;
+        max-height: 500px;
+      }
+  }

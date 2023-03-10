@@ -23,21 +23,18 @@
       <mat-card-title class="title"
         ><a class="postname">{{ post.title }}</a></mat-card-title
       >
-      <span style="display: inline-block"
-        ><mat-card-subtitle
-          >by
-          <a routerLink="/user/{{ post.userName }}">{{
-            post.userName
-          }}</a></mat-card-subtitle
-        ></span
-      >
+      
       <mat-card-subtitle
         ><a class="postname" routerLink="/forum/{{ post.forumName }}">{{
           post.forumName
         }}</a></mat-card-subtitle
       >
       <mat-card-subtitle
-        ><small>{{ post.createdAt }}</small></mat-card-subtitle
+        ><small>{{ post.createdAt }}
+          by
+            <a routerLink="/user/{{ post.userName }}">{{
+              post.userName
+            }}</a></small></mat-card-subtitle
       >
       <div
         class="header-right-container"

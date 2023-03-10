@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ForumModel } from '../forum-response';
 import { ForumService } from '../forum.service';
 import { catchError, throwError } from 'rxjs';
@@ -11,6 +11,7 @@ import { catchError, throwError } from 'rxjs';
 export class ListForumsComponent implements OnInit {
 
   forums: Array<ForumModel> = [];
+  @Input() showTitle: boolean = true;
   constructor(private forumService: ForumService) {     
   }
 

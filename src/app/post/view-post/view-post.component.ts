@@ -102,7 +102,7 @@ export class ViewPostComponent implements OnInit {
 
    onScroll():void{
     this.commentService
-    .getAllCommentsFromPost(this.postId, ++this.page, 25)
+    .getAllCommentsFromPost(this.postId, ++this.page, 10)
     .subscribe((comments: CommentPayload[]) =>{
       this.comments.push(...comments);
     });

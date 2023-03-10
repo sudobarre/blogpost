@@ -66,6 +66,7 @@ import { ReportDialogComponent } from './shared/report-dialog/report-dialog.comp
 import { ScrollTopComponent } from './shared/scroll-top/scroll-top.component';
 import { SearchBarComponent } from './header/search-bar/search-bar.component';
 import { RateLimitInterceptor } from './_helpers/rate-limit.interceptor';
+import { DialogCreatePostComponent } from './shared/dialog-create-post/dialog-create-post.component';
 
 
 @NgModule({
@@ -97,6 +98,7 @@ import { RateLimitInterceptor } from './_helpers/rate-limit.interceptor';
         ReportDialogComponent,
         ScrollTopComponent,
         SearchBarComponent,
+        DialogCreatePostComponent,
         
     ],
     providers: [

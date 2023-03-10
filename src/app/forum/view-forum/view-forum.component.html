@@ -9,26 +9,30 @@
 </ng-template>
 <ng-template [ngIf]="!isLoading">
   <div class="container">
+    
     <div class="row" id="forum-feed">
+      
       <div class="col-md-8">
-        <mat-toolbar-row
-          class="mat-elevation-z8"
-          style="background-color: white; border-radius: 4px"
-        >
-          <h1>
-            <span style="font-family: Roboto, 'Helvetica Neue', sans-serif; margin-bottom: 15px;"
-              >Posts on <strong> {{ forumName }}</strong></span
-            >
-            <!-- TODO: add option-buttons and on save add them to user's followed forums. -->
-          </h1>
-          <span class="example-spacer"></span>
+        <div class="mat-elevation-z8 p-2 text-center bg-light" style="border-radius: 4px;background-image: url('https://images.unsplash.com/photo-1589506356380-33c39d65a6a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80');">
           <app-options-button [name]="forumType" [toDelete]="this.forum"></app-options-button>
-        </mat-toolbar-row>
+
+          <h1 class="mb-3" style="color: #F0CAA3;"><strong>{{ forumName }}</strong></h1>
+          <h4 style="word-wrap: break-word;color: #F0CAA3;">{{forumDescription}}</h4>
+          <button
+            mat-raised-button
+            color="primary"
+            style="margin: 1px; padding: 10px;"
+            (click)="openCreatePostDialog()"
+          >
+            Create a post on this forum
+          </button>
+
+        </div>
+         <!-- TODO: add option-buttons and on save add them to user's followed forums. -->
         <app-post-tile [posts]="postsByForum"></app-post-tile>
       </div>
 
       <div class="col-md-3 mobile-hide">
-        <app-forum-info [forum]="forum"></app-forum-info>
         <app-forum-side-bar></app-forum-side-bar>
       </div>
     </div>

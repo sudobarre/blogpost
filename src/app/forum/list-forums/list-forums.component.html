@@ -1,3 +1,4 @@
+<!--
 <div class="container">
   <div class="row">
     <hr />
@@ -16,3 +17,30 @@
     </div>
   </div>
 </div>
+-->
+
+<!-- La posta abajo -->
+
+<mat-toolbar-row *ngIf="showTitle"
+          class="mat-elevation-z8"
+          style="background-color: white; border-radius: 4px;margin-top: 69px;"
+        >
+          <h1>
+            <span style="font-family: Roboto, 'Helvetica Neue', sans-serif"
+              ><strong> Forums </strong></span
+            >
+          </h1>
+          <span class="example-spacer"></span>
+        </mat-toolbar-row>
+<mat-list class="example-list-wrapping">
+  <span *ngFor="let forum of forums" >
+    <span routerLink="/forum/{{ forum.name }}" class="forum">
+      <mat-list-item lines="2"  matTooltip="{{forum.numberOfPosts}} posts">
+        <span matListItemTitle>{{ forum.name }}</span> 
+        <span>{{ forum.description }} </span>
+      </mat-list-item>
+    </span>
+    <hr />
+  </span>
+  <!-- add forum.numberOfPosts as a tooltip or sth like that -->
+</mat-list>
