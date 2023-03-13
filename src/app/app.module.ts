@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, SecurityContext } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 
@@ -15,6 +15,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { bootstrapGithub, bootstrapLinkedin, bootstrapTelegram } from "@ng-icons/bootstrap-icons";
 import { NgIconsModule } from '@ng-icons/core';
+import { MarkdownModule, MarkedOptions, MarkedRenderer, SECURITY_CONTEXT } from 'ngx-markdown';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -48,7 +49,7 @@ import { CreateForumComponent } from './forum/create-forum/create-forum.componen
 import { ListForumsComponent } from './forum/list-forums/list-forums.component';
 import { CreatePostComponent } from './post/create-post/create-post.component';
 import { ViewPostComponent } from './post/view-post/view-post.component';
-import { PostTileComponent } from './shared/post-tile/post-tile.component';
+import { PostTileComponent } from './post/post-tile/post-tile.component';
 import { ForumSideBarComponent } from './shared/forum-side-bar/forum-side-bar.component';
 import { ReadMoreComponent } from './shared/read-more/read-more.component';
 import { AuthComponent } from './auth/auth.component';
@@ -60,13 +61,14 @@ import { CreateButtonsComponent } from './shared/create-buttons/create-buttons.c
 import { UserForumsComponent } from './forum/user-forums/user-forums.component';
 import { ForumInfoComponent } from './forum/forum-info/forum-info.component';
 import { DeleteDialogComponent } from './shared/options-button/delete-dialog/delete-dialog.component';
-import { SavedPostsComponent } from './saved-posts/saved-posts.component';
 import { ContactMeComponent } from './contact-me/contact-me.component';
 import { ReportDialogComponent } from './shared/report-dialog/report-dialog.component';
 import { ScrollTopComponent } from './shared/scroll-top/scroll-top.component';
 import { SearchBarComponent } from './header/search-bar/search-bar.component';
 import { RateLimitInterceptor } from './_helpers/rate-limit.interceptor';
 import { DialogCreatePostComponent } from './shared/dialog-create-post/dialog-create-post.component';
+import { ShowCommentComponent } from './comment/show-comment/show-comment.component';
+import { SavedPostsComponent } from './post/saved-posts/saved-posts.component';
 
 
 @NgModule({
@@ -99,6 +101,7 @@ import { DialogCreatePostComponent } from './shared/dialog-create-post/dialog-cr
         ScrollTopComponent,
         SearchBarComponent,
         DialogCreatePostComponent,
+        ShowCommentComponent,
         
     ],
     providers: [
@@ -125,6 +128,19 @@ import { DialogCreatePostComponent } from './shared/dialog-create-post/dialog-cr
         HttpClientModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
+        //markdown rendering by ngx-markdown
+        MarkdownModule.forRoot({
+          sanitize: SecurityContext.NONE,
+            // configure options for markdown rendering
+            markedOptions: {
+              provide: MarkedOptions,
+              useValue: {
+                // enable emoji support
+                emoji: true,
+              
+              }
+            },
+          }),
         FontAwesomeModule,
         MatButtonModule,
         MatCardModule,

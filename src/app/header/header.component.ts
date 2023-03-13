@@ -61,8 +61,8 @@ export class HeaderComponent implements OnInit {
   }
 
   private _filterForums(value: string) {
-    if (!value) {
-      return this.forums;
+    if (!value|| value.trim() === '') {
+      return [];
     }
     const filterValue = value.toLowerCase();
 
@@ -71,6 +71,13 @@ export class HeaderComponent implements OnInit {
              forum.description.toLowerCase().includes(filterValue);
     });
   }
+
+  redirectToSelectedForum(forumName: any) {
+    if (forumName) {
+      this.router.navigate(['/forum/', forumName]);
+    }
+  }
+  
 
   logout(): void {
     this.isLoggedIn = false;
@@ -91,11 +98,9 @@ export class HeaderComponent implements OnInit {
   home(): void {
      this.router.navigate(['']);
   }
-public onSidenavClose() {
-  this.sidenav.close();
-}
 
-
-
+  public onSidenavClose() {
+    this.sidenav.close();
+  }
 }
 

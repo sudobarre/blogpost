@@ -9,6 +9,7 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { EventBusService } from '../_shared/event-bus.service';
 import { EventData } from '../_shared/event.class';
 import { AuthService } from '../auth/auth.service';
+import { PostService } from '../shared/post.service';
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
@@ -17,7 +18,8 @@ export class HttpRequestInterceptor implements HttpInterceptor {
   constructor(
     private storageService: StorageService,
     private authService: AuthService,
-    private eventBusService: EventBusService
+    private eventBusService: EventBusService,
+    private postService: PostService,
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -49,6 +51,8 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     );
   }
 
+  
+
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
     if (!this.isRefreshing) {
       this.isRefreshing = true;
@@ -57,6 +61,12 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         return this.authService.refreshToken().pipe(
           switchMap(() => {
             this.isRefreshing = false;
+            //fetch the user's saved posts and store them in local storage.
+            this.postService.getSavedPosts().subscribe(
+              (savedPosts)=>{
+                this.storageService.set('savedPosts', JSON.stringify(savedPosts));
+              }
+            );
             return next.handle(request);
           }),
           catchError((error) => {

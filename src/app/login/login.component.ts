@@ -90,6 +90,7 @@ export class LoginComponent implements OnInit {
           );
       },
       error: err => {
+        window.localStorage.clear();
         this.isError = true;
         this.errorMessage = err.error.message;
         catchError(err);

@@ -3,13 +3,17 @@
   style="white-space: pre-wrap"
   [hidden]="fullText"
   [innerHTML]="rmTextShort"
-></p>
+>
+<markdown [data]="commentMarkdown" class="post-body"></markdown>
+</p>
 <p
   class="break-wrap mb5"
   style="white-space: pre-wrap"
   [hidden]="!fullText"
   [innerHTML]="rmTextFull"
-></p>
+>
+<markdown [data]="commentMarkdown" class="post-body"></markdown>
+</p>
 <p class="mb0">
   <small>
     <a

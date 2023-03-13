@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PostService } from 'src/app/shared/post.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostModel } from 'src/app/shared/post-model';
@@ -32,10 +32,18 @@ export class ViewPostComponent implements OnInit {
   page: number = 0;
 
   isLoading: boolean = false;
-  commentType: string = 'comment';
 
-  constructor(private postService: PostService, private activateRoute: ActivatedRoute,
-    private commentService: CommentService, private router: Router, private storageService: StorageService, private forumService: ForumService) {
+  postMarkdown: string = '';
+  @Input() commentText: string;
+
+  constructor(
+    private postService: PostService,
+    private activateRoute: ActivatedRoute,
+    private commentService: CommentService,
+    private router: Router,
+    private storageService: StorageService,
+    private forumService: ForumService,
+    ) {
     this.postId = this.activateRoute.snapshot.params['id'];
 
     this.commentForm = new FormGroup({
@@ -51,12 +59,11 @@ export class ViewPostComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.getCommentsFromPost();
-
-
     this.postService.getPost(this.postId)
       .pipe(
         switchMap(post => {
           this.post = post;
+          this.postMarkdown = this.post.description;
           return this.forumService.getForum(this.post.forumName);
         })
       )
@@ -67,16 +74,20 @@ export class ViewPostComponent implements OnInit {
         catchError(error);
       });
 
+      
+
   }
 
   postComment() {
     if(this.storageService.isLoggedIn()){
-      this.commentPayload.userName = this.storageService.getUsername(),
-      this.commentPayload.text = this.commentForm.get('text')?.value;
+      this.commentPayload.userName = this.storageService.getUsername();
+      let text = this.commentForm.get('text')?.value;      
+      this.commentPayload.text = text;
       this.commentService.postComment(this.commentPayload).subscribe(data => {
         this.commentForm.get('text')?.setValue('');
         this.getCommentsFromPost();
-        //gotta reload for the new comment to show up, else on scroll it wont fetch it.
+        //gotta reload for the new comment to show up, else on scroll it wont fetch it,
+        //since it just gets the first page of comments.
         window.location.reload();
       }, error => {
         throwError(error);

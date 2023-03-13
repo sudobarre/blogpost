@@ -68,7 +68,8 @@
               <mat-card-content>
 
                 <div>
-                  <p [innerHtml]="post.description" class="post-body"></p>
+                  
+                  <markdown [data]="postMarkdown" class="post-body"></markdown>
                 </div>
               </mat-card-content>
 
@@ -95,38 +96,15 @@
               >
                 Comment
               </button>
+
+              <!-- TODO: Add comment as anonymous user.-->
             </form>
             <hr />
 
 
 
             <div style="margin-top: 1px" *ngFor="let comment of comments">
-
-              <mat-card class="comment-card" mat-elevation-z8>
-                <mat-card-header>
-                  <div mat-card-avatar [ngStyle]="{
-                                    'background-image':
-                                      'url(https://material.angular.io/assets/img/examples/shiba1.jpg)'
-                                  }" routerLink="/user/{{ comment.userName }}" class="example-header-image">
-                  </div>
-                  <div class="header-right-container" style="position: absolute; right: 0; padding-right: 10px">
-                    <app-options-button [toDelete]="comment" [name]="commentType"></app-options-button>
-                  </div>
-                  <mat-card-title>
-                    <a class="username" routerLink="/user/{{ comment.userName }}" style="text-decoration: none; color:#3f51b5">{{ comment.userName }}</a>
-                  </mat-card-title>
-                  <mat-card-subtitle>
-                    <span> {{ comment.createdDate }} </span>
-                  </mat-card-subtitle>
-                </mat-card-header>
-                  <mat-card-content>
-                  
-                    <div>
-                      <p [innerHtml]="comment.text" class="post-body"></p>
-                    </div>
-                  </mat-card-content>
-              </mat-card>
-
+              <app-show-comment [comment]="comment"></app-show-comment>
             </div>
           </div>
         </div>

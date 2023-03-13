@@ -14,7 +14,15 @@ export class ReadMoreComponent implements OnChanges {
     rmTextShort = '';
     rmTextFull = '';
     inputWords: string[] = [];
+
+    commentMarkdown: string = '';
+
     constructor() {
+    }
+
+    ngOnInit(){
+        this.commentMarkdown = this.text;
+
     }
 
     readMore(flag: any) {

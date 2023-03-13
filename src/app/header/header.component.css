@@ -62,7 +62,7 @@ mat-divider {
 }
 
 .searchbar {
-
+  position: relative;
   display: flex;
   margin-left: 20px;
   margin-right: 20px;
@@ -71,7 +71,7 @@ mat-divider {
 
 .search-form-full-width {
   padding-top: 20px;
-
+  
   width: 100%;
 }
 
