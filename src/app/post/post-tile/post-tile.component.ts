@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewEncapsulation, Input, ChangeDetectorRef } from '@angular/core';
-import { PostService } from '../../shared/post.service';
-import { PostModel } from '../../shared/post-model';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { PostModel } from '../../shared/post-model';
+import { PostService } from '../../shared/post.service';
 @Component({
   selector: 'app-post-tile',
   templateUrl: './post-tile.component.html',

@@ -31,7 +31,6 @@
     "@tinymce/tinymce-angular": "^7.0.0",
     "bootstrap": "^5.2.3",
     "emoji-toolkit": "^7.0.1",
-    "highlight.js": "^11.7.0",
     "marked": "^4.2.12",
     "ngx-infinite-scroll": "^15.0.0",
     "ngx-markdown": "^15.1.1",
