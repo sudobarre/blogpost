@@ -11,6 +11,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class VoteService {
+  private voteCounts: Map<number, number> = new Map<number, number>();
 
   constructor(private http: HttpClient) { }
 
@@ -19,5 +20,13 @@ export class VoteService {
       environment.apiKey + '/vote/',
       votePayload,
       httpOptions);
+  }
+
+  updateVoteCount(postId: number, voteCount: number): void {
+    this.voteCounts.set(postId, voteCount);
+  }
+
+  getVoteCount(postId: number): number | undefined {
+    return this.voteCounts.get(postId);
   }
 }

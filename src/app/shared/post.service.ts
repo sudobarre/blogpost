@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { PostModel } from './post-model';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CreatePostPayload } from '../post/create-post/create-post.payload';
 import { environment } from 'src/environments/environment';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -30,7 +30,7 @@ export class PostService {
         // delete the post with the specified postId
         return this.http.delete(post_url + '/' + postId);
       } else {
-        return;
+        return of(null);
       }
     });
   }

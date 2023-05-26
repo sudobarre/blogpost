@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 
 # My files
-/src/environments/
+/src/environments/environment.prod.ts
