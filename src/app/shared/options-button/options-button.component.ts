@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild} from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommentService } from 'src/app/comment/comment.service';
 import { CreatePostPayload } from 'src/app/post/create-post/create-post.payload';
 import { StorageService } from 'src/app/_services/storage.service';
@@ -10,6 +10,8 @@ import { PostService } from '../post.service';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ReportDialogComponent } from '../report-dialog/report-dialog.component';
 import { ForumService } from 'src/app/forum/forum.service';
+import { WebSocketSubject } from 'rxjs/webSocket';
+import { WebSocketService } from 'src/app/_services/web-socket.service';
 @Component({
   selector: 'app-options-button',
   templateUrl: './options-button.component.html',
@@ -32,14 +34,21 @@ export class OptionsButtonComponent implements OnInit{
 
   description: string = '';
 
+  viewCount: number = 0;
+  webSocketSubject: WebSocketSubject<any>;
+
+
   constructor(
     private postService: PostService,
     private commentService: CommentService,
     private dialog: MatDialog,
     private localStorage: StorageService,
     private router: Router,
-    private forumService: ForumService
-  ) {}
+    private forumService: ForumService,
+    private webSocketService: WebSocketService
+  ) {
+    this.webSocketSubject = this.webSocketService.getWebSocketSubject();
+  }
 
   ngOnInit(): void {
     this.isPost = (this.name == "post");
@@ -54,6 +63,12 @@ export class OptionsButtonComponent implements OnInit{
       // TODO: call forumService to check if the forum is followed by the user
       this.isFollowed = false;
     }
+    // Subscribe to WebSocket updates for view count
+    this.webSocketSubject.subscribe((data: any) => {
+      if (data.postId === this.toDelete.id) {
+        this.viewCount = data.viewCount;
+      }
+    });
   }
 
   containsObject(obj: any, list: any) {

@@ -8,6 +8,15 @@
       <mat-icon> star_border</mat-icon>
     </button>
   </div>
+
+  <!-- View count of post here with eye icon: <mat-icon>remove_red_eye</mat-icon> 
+      Should increment view count if user presses on the post or on "Read more" button
+  -->
+  <div>
+    <mat-icon>remove_red_eye</mat-icon>
+    {{ viewCount }}
+  </div>
+
   <div *ngIf="isForum && isLoggedIn" style="width: 40px; height: 40px">
     <button mat-icon-button (click)="follow(toDelete)">
       <span *ngIf="isFollowed">

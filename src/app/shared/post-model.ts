@@ -11,4 +11,5 @@ export class PostModel {
     upVote!: boolean;
     downVote!: boolean;
     saved!: boolean;
+    viewCount! : boolean;
 }

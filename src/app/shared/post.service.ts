@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { PostModel } from './post-model';
-import { Observable, of } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { CreatePostPayload } from '../post/create-post/create-post.payload';
 import { environment } from 'src/environments/environment';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteDialogComponent } from './options-button/delete-dialog/delete-dialog.component';
 import { EventBusService } from '../_shared/event-bus.service';
+import { WebSocketSubject } from 'rxjs/webSocket';
+import { WebSocketService } from '../_services/web-socket.service';
 
 const post_url: string = environment.apiKey + "/post";
 const httpOptions = {
@@ -16,8 +18,16 @@ const httpOptions = {
 })
 export class PostService {
 
-
-  constructor(private http: HttpClient, private dialog: MatDialog, private sharedService: EventBusService) { }
+  private webSocketSubject: WebSocketSubject<any>;
+  
+  constructor(
+    private http: HttpClient,
+    private dialog: MatDialog,
+    private sharedService: EventBusService,
+    private webSocketService: WebSocketService
+    ) { 
+      this.webSocketSubject = this.webSocketService.getWebSocketSubject();
+    }
 
    openDeleteDialog(postId: string): void {
     const dialogConfig = new MatDialogConfig();
@@ -47,7 +57,16 @@ export class PostService {
   }
 
   getPost(id: number): Observable<PostModel> {
-    return this.http.get<PostModel>(post_url + '/' + id);
+    return this.http.get<PostModel>(post_url + '/' + id).pipe(
+      tap((post: PostModel) => {
+        // Send WebSocket update for view count
+        this.webSocketSubject.next({
+          type: 'viewCount',
+          postId: post.id,
+          viewCount: post.viewCount
+        });
+      })
+    );
   }
 
   getAllPostsByUser(name: string, page: number, limit?: number, sortBy?: string, direction?: string): Observable<PostModel[]> {
