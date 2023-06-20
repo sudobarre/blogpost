@@ -4,62 +4,73 @@
   [infiniteScrollThrottle]="1000"
   (scrolled)="onScroll()"
 >
-  <!--  (click)="$event.stopPropagation()"  -->
-  <mat-card
-    class="post-card mat-elevation-z8"
-    *ngFor="let post of posts"
-    routerLink="/post/{{ post.id }}"
-    (click)="updateViewCount(post)"
-  >
-    <mat-card-header>
-      <div
-        mat-card-avatar
-        [ngStyle]="{
-          'background-image':
-            'url(https://material.angular.io/assets/img/examples/shiba1.jpg)'
-        }"
-        routerLink="/user/{{ post.userName }}"
-        class="example-header-image mat-elevation-z8"
-      ></div>
-      <mat-card-title class="title">
-          <a class="postname">
-            {{ post.title }}
-          </a>
-        </mat-card-title
-      >
-      
-      <mat-card-subtitle
-        ><a class="postname" routerLink="/forum/{{ post.forumName }}">{{
-          post.forumName
-        }}</a></mat-card-subtitle
-      >
-      <mat-card-subtitle
-        ><small>{{ post.createdAt }}
-          by
-            <a routerLink="/user/{{ post.userName }}">{{
-              post.userName
-            }}</a></small></mat-card-subtitle
-      >
-      <div
-        class="header-right-container"
-        style="position: absolute; right: 0; padding-right: 10px"
-      >
-        <span (click)="$event.stopPropagation()">
-          <app-options-button
-            [toDelete]="post"
-            [name]="postType"
-            [viewCount]="post.viewCount"
-            
-          ></app-options-button>
-        </span>
-      </div>
-    </mat-card-header>
-    <mat-card-content class="post-body">
-        <app-read-more [text]="post.description" (click)="handleReadMoreClick($event, post)"></app-read-more>
-    </mat-card-content>
-    <span (click)="$event.stopPropagation()">
-      <app-post-data-footer [post]="post"></app-post-data-footer>
-    </span>
-  </mat-card>
-  <app-scroll-top style="position: absolute; z-index: 23847234;"></app-scroll-top>
+<ng-template [ngIf]="isLoading">
+  <div class="overlay">
+    <mat-spinner
+      [diameter]="50"
+      [color]="'accent'"
+      [hidden]="!isLoading"
+    ></mat-spinner>
+  </div>
+</ng-template>
+<ng-template [ngIf]="!isLoading">
+
+    <mat-card
+      class="post-card mat-elevation-z8"
+      *ngFor="let post of posts"
+      routerLink="/post/{{ post.id }}"
+      (click)="updateViewCount(post.id)"
+    >
+      <mat-card-header>
+        <div
+          mat-card-avatar
+          [ngStyle]="{
+            'background-image':
+              'url(https://material.angular.io/assets/img/examples/shiba1.jpg)'
+          }"
+          routerLink="/user/{{ post.userName }}"
+          class="example-header-image mat-elevation-z8"
+        ></div>
+        <mat-card-title class="title">
+            <a class="postname">
+              {{ post.title }}
+            </a>
+          </mat-card-title
+        >
+        
+        <mat-card-subtitle
+          ><a class="postname" routerLink="/forum/{{ post.forumName }}">{{
+            post.forumName
+          }}</a></mat-card-subtitle
+        >
+        <mat-card-subtitle
+          ><small>{{ post.createdAt }}
+            by
+              <a routerLink="/user/{{ post.userName }}">{{
+                post.userName
+              }}</a></small></mat-card-subtitle
+        >
+        <div
+          class="header-right-container"
+          style="position: absolute; right: 0; padding-right: 10px"
+        >
+          <span (click)="$event.stopPropagation()">
+            <app-options-button
+              [toDelete]="post"
+              [name]="'post'"
+              [viewCount]="post.viewCount"
+              
+            ></app-options-button>
+          </span>
+        </div>
+      </mat-card-header>
+      <mat-card-content class="post-body">
+          <app-read-more [text]="post.description" (click)="handleReadMoreClick($event, post.id)"></app-read-more>
+      </mat-card-content>
+      <span (click)="$event.stopPropagation()">
+        <app-post-data-footer [post]="post"></app-post-data-footer>
+      </span>
+    </mat-card>
+    <app-scroll-top style="position: absolute; z-index: 23847234;"></app-scroll-top>
+  </ng-template>
 </div>

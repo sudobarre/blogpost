@@ -19,7 +19,7 @@ export class PostService {
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
-    private sharedService: EventBusService,
+    private sharedService: EventBusService
     ) { 
     }
 

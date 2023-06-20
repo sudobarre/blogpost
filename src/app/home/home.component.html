@@ -1,13 +1,5 @@
-<ng-template [ngIf]="isLoading">
-  <div class="overlay">
-    <mat-spinner
-      [diameter]="50"
-      [color]="'accent'"
-      [hidden]="!isLoading"
-    ></mat-spinner>
-  </div>
-</ng-template>
-<ng-template [ngIf]="!isLoading">
+
+
   <div class="container">
     <div class="row">
       <div class="col-md-8">
@@ -23,10 +15,10 @@
           </mat-tab>
           -->
           <mat-tab label="Top">
-            <app-post-tile [posts]="postsByVotes"></app-post-tile>
+            <app-post-tile [sortBy]="'voteCount'"></app-post-tile>
           </mat-tab>
           <mat-tab label="New">
-            <app-post-tile [posts]="postsByDate"></app-post-tile>
+            <app-post-tile [sortBy]="'createdDate'"></app-post-tile>
           </mat-tab>
         </mat-tab-group>
       </div>
@@ -39,4 +31,3 @@
       </div>
     </div>
   </div>
-</ng-template>

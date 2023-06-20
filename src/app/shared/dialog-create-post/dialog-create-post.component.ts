@@ -76,7 +76,7 @@ export class DialogCreatePostComponent {
       throwError(error);
     })
     
-   console.log(JSON.stringify(this.postPayload));
+   //console.log(JSON.stringify(this.postPayload));
    
   }
 }

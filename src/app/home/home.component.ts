@@ -23,53 +23,30 @@ export class HomeComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
   username: string | undefined;
   isLoading: boolean = true;
-  private postDeletedSub: Subscription;
-  private refreshPostsSub: Subscription;
 
-  constructor(private postService: PostService,
-    private localStorage: StorageService,
-    private sharedService: EventBusService) {
+  constructor(
+    private postService: PostService,
+    private localStorage: StorageService
+    ) {
 
     this.isLoggedIn = localStorage.isLoggedIn();
     this.username = localStorage.getUsername();
   }
 
   ngOnInit(): void {
+    /*
     this.getAllPosts().subscribe(posts => {
       this.postsByDate = posts[0];
       this.postsByVotes = posts[1];
       this.isLoading = false;
     });
-    this.retrievePosts("voteCount");
+    
 
-    this.postDeletedSub = this.sharedService.postDeleted$.subscribe(() => {
-      this.refreshPostsSub = forkJoin([this.refreshPosts("voteCount"), this.refreshPosts("postId")]).subscribe((results: any[]) => {
-        this.postsByVotes = results[0];
-        this.postsByDate = results[1];
-      });
-    });
-
+    
     //TODO: Posts for user on followed forums
 
-  }
+    */
 
-  refreshPosts(sort: string): Observable<PostModel[]> {
-    return this.postService.getAllPosts(this.page, 15, sort).pipe(
-      catchError(error => {
-        console.error(error);
-        return of([]);
-      })
-    );
-  }
-
-  retrievePosts(sort: string) {
-    this.postService.getAllPosts(this.page, 15, sort).subscribe((post: PostModel[]) => {
-      if (sort === "voteCount") {
-        this.postsByVotes = post;
-      } else {
-        this.postsByDate = post;
-      }
-    });
   }
 
   getAllPosts(): Observable<Array<PostModel[]>> {
@@ -84,9 +61,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.postDeletedSub.unsubscribe();
-    if (this.refreshPostsSub) {
-      this.refreshPostsSub.unsubscribe();
-    }
+
   }
 }

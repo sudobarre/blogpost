@@ -30,7 +30,7 @@
 
         </div>
          <!-- TODO: add option-buttons and on save add them to user's followed forums. -->
-        <app-post-tile [posts]="postsByForum"></app-post-tile>
+        <app-post-tile [target]="'forum'" [forumName]="this.forumName"></app-post-tile>
       </div>
 
       <div class="col-md-3 mobile-hide">
