@@ -7,8 +7,6 @@ import { environment } from 'src/environments/environment';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DeleteDialogComponent } from './options-button/delete-dialog/delete-dialog.component';
 import { EventBusService } from '../_shared/event-bus.service';
-import { WebSocketSubject } from 'rxjs/webSocket';
-import { WebSocketService } from '../_services/web-socket.service';
 
 const post_url: string = environment.apiKey + "/post";
 const httpOptions = {
@@ -17,16 +15,12 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class PostService {
-
-  private webSocketSubject: WebSocketSubject<any>;
   
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,
     private sharedService: EventBusService,
-    private webSocketService: WebSocketService
     ) { 
-      this.webSocketSubject = this.webSocketService.getWebSocketSubject();
     }
 
    openDeleteDialog(postId: string): void {
@@ -59,12 +53,8 @@ export class PostService {
   getPost(id: number): Observable<PostModel> {
     return this.http.get<PostModel>(post_url + '/' + id).pipe(
       tap((post: PostModel) => {
-        // Send WebSocket update for view count
-        this.webSocketSubject.next({
-          type: 'viewCount',
-          postId: post.id,
-          viewCount: post.viewCount
-        });
+        // websocket maybe?
+        
       })
     );
   }

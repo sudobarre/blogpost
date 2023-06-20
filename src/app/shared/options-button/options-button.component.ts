@@ -10,8 +10,6 @@ import { PostService } from '../post.service';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { ReportDialogComponent } from '../report-dialog/report-dialog.component';
 import { ForumService } from 'src/app/forum/forum.service';
-import { WebSocketSubject } from 'rxjs/webSocket';
-import { WebSocketService } from 'src/app/_services/web-socket.service';
 @Component({
   selector: 'app-options-button',
   templateUrl: './options-button.component.html',
@@ -22,6 +20,7 @@ export class OptionsButtonComponent implements OnInit{
   @Input() toDelete: any;
   @Input() isForum: boolean;
   @Input() name: string;
+  @Input() viewCount: number = 0;
 
   isPost: boolean;
   isStarred: boolean;
@@ -34,9 +33,6 @@ export class OptionsButtonComponent implements OnInit{
 
   description: string = '';
 
-  viewCount: number = 0;
-  webSocketSubject: WebSocketSubject<any>;
-
 
   constructor(
     private postService: PostService,
@@ -45,9 +41,7 @@ export class OptionsButtonComponent implements OnInit{
     private localStorage: StorageService,
     private router: Router,
     private forumService: ForumService,
-    private webSocketService: WebSocketService
   ) {
-    this.webSocketSubject = this.webSocketService.getWebSocketSubject();
   }
 
   ngOnInit(): void {
@@ -55,20 +49,17 @@ export class OptionsButtonComponent implements OnInit{
     this.isLoggedIn = this.localStorage.isLoggedIn();
     if (this.isLoggedIn) {
       if (this.name == "post") {
+        this.isPost = true;
         this.savedPosts = this.localStorage.getSavedPosts();
         this.isStarred = this.containsObject(this.toDelete, this.savedPosts);
       };
       this.userRoles = this.localStorage.getRoles();
       this.username = this.localStorage.getUsername();
-      // TODO: call forumService to check if the forum is followed by the user
+      // TODO: call forumService to check if the forum is followed by the user if toDelete is a forum
       this.isFollowed = false;
     }
-    // Subscribe to WebSocket updates for view count
-    this.webSocketSubject.subscribe((data: any) => {
-      if (data.postId === this.toDelete.id) {
-        this.viewCount = data.viewCount;
-      }
-    });
+    if(this.isPost) this.viewCount = this.toDelete.viewCount;
+    
   }
 
   containsObject(obj: any, list: any) {

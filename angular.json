@@ -41,7 +41,8 @@
               "node_modules/prismjs/components/prism-typescript.min.js",
               "node_modules/prismjs/components/prism-javascript.min.js",
               "node_modules/prismjs/plugins/command-line/prism-command-line.js",
-              "node_modules/emoji-toolkit/lib/js/joypixels.min.js"
+              "node_modules/emoji-toolkit/lib/js/joypixels.min.js",
+              "node_modules/sockjs-client/dist/sockjs.min.js"
             ]
           },
           "configurations": {

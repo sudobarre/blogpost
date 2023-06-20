@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, catchError, throwError } from 'rxjs';
-import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { PostModel } from '../post-model';
 import { VoteService } from '../vote.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,7 +8,6 @@ import { StorageService } from 'src/app/_services/storage.service';
 import { VotePayload } from '../vote/vote-payload';
 import { VoteType } from '../vote/vote-type';
 import { environment } from 'src/environments/environment';
-import { WebSocketService } from 'src/app/_services/web-socket.service';
 
 
 @Component({
@@ -26,47 +24,29 @@ export class PostDataFooterComponent {
   link: string = '';
   hasVoted: boolean;
 
-  private webSocketSubject: WebSocketSubject<any>;
-  private subscription: Subscription;
-
   constructor(
     private router: Router,
     private voteService: VoteService,
     private _snackBar: MatSnackBar,
     private storage: StorageService,
-    private webSocketService: WebSocketService
     ){
        this.votePayload = {
         voteType: undefined,
         postId: undefined
       }
-      this.webSocketSubject = webSocket(`${environment.websocketUrl}/votes`);
+      //websocket?
       this.isLoggedIn = this.storage.isLoggedIn();
     }
     ngOnInit(): void {
-    this.webSocketSubject = this.webSocketService.getWebSocketSubject();
 
     this.hasVoted = (this.post.downVote || this.post.upVote);
     //when a post gets created, the mapper assigns false to upVote and downVote in the backend.  
     this.url = new URL(`/blogpost/post/${this.post.id}`, this.url.origin);
     this.link = this.url.href;
-    // Subscribe to the WebSocket messages
-    this.subscription = this.webSocketSubject.subscribe(
-      (voteCount: number) => {
-        // Update the vote count in the centralized service
-        this.voteService.updateVoteCount(this.post.id, voteCount);
-      },
-      (error: any) => {
-        console.error('WebSocket error:', error);
-      }
-    );
+    // websocket?
+   
   }
-  ngOnDestroy(): void {
-    // Unsubscribe and close the WebSocket connection
-    this.subscription.unsubscribe();
-    this.webSocketSubject.complete();
-  }
-  
+
   upvotePost() {
     if(!this.isLoggedIn) return;
     if(this.post.upVote || this.votePayload.voteType == VoteType.UPVOTE){      
@@ -120,7 +100,7 @@ export class PostDataFooterComponent {
         this.post.upVote = isUpvoted;
         this.post.downVote = !isUpvoted;
         this.hasVoted = true;
-        this.webSocketSubject.next(updatedVoteCount);
+        //websocket?
     }, error => {
       catchError(error);
     }); 

@@ -9,6 +9,7 @@
     class="post-card mat-elevation-z8"
     *ngFor="let post of posts"
     routerLink="/post/{{ post.id }}"
+    (click)="updateViewCount(post)"
   >
     <mat-card-header>
       <div
@@ -47,12 +48,14 @@
           <app-options-button
             [toDelete]="post"
             [name]="postType"
+            [viewCount]="post.viewCount"
+            
           ></app-options-button>
         </span>
       </div>
     </mat-card-header>
     <mat-card-content class="post-body">
-        <app-read-more [text]="post.description" (click)="$event.stopPropagation()"></app-read-more>
+        <app-read-more [text]="post.description" (click)="handleReadMoreClick($event, post)"></app-read-more>
     </mat-card-content>
     <span (click)="$event.stopPropagation()">
       <app-post-data-footer [post]="post"></app-post-data-footer>

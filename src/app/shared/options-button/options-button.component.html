@@ -9,10 +9,10 @@
     </button>
   </div>
 
-  <!-- View count of post here with eye icon: <mat-icon>remove_red_eye</mat-icon> 
+  <!-- 
       Should increment view count if user presses on the post or on "Read more" button
   -->
-  <div>
+  <div *ngIf="isPost">
     <mat-icon>remove_red_eye</mat-icon>
     {{ viewCount }}
   </div>

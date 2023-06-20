@@ -27,7 +27,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   private refreshPostsSub: Subscription;
 
   constructor(private postService: PostService,
-    private forumService: ForumService,
     private localStorage: StorageService,
     private sharedService: EventBusService) {
 

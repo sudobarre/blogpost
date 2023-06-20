@@ -69,6 +69,8 @@ import { RateLimitInterceptor } from './_helpers/rate-limit.interceptor';
 import { DialogCreatePostComponent } from './shared/dialog-create-post/dialog-create-post.component';
 import { ShowCommentComponent } from './comment/show-comment/show-comment.component';
 import { SavedPostsComponent } from './post/saved-posts/saved-posts.component';
+import { ViewCountWebSocketService } from './_services/view-count-web-socket.service';
+
 
 
 @NgModule({
@@ -118,7 +120,8 @@ import { SavedPostsComponent } from './post/saved-posts/saved-posts.component';
         {   provide: HTTP_INTERCEPTORS,
             useClass: RateLimitInterceptor,
             multi: true 
-        }
+        },
+        ViewCountWebSocketService,
     ],
     bootstrap: [AppComponent],
     imports: [
